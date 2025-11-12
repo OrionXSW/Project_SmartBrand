@@ -96,7 +96,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   SHT20_Init();
   
-  UART_SendString("Enter\r\n");
+  UART_SendString((uint8_t *)"Enter\r\n");
   
 
 
