@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "rtc.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -92,30 +93,70 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_TIM9_Init();
-  MX_TIM11_Init();
   MX_ADC1_Init();
   MX_SPI1_Init();
+  MX_TIM11_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   SHT20_Init();
   OLED_Init();
+  MPU6050_Init();
+//  MPU6050_DMPInit();
+  HP6_Init();
 
+  HAL_TIM_Base_Start(&htim9);     // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 //  OLED_ShowChar(0,0,'A',24);
-//  OLED_ShowString(3,0,"ÎÂÊª¶ÈAAA",16);
-
+//  OLED_ShowString(3,0,"ï¿½ï¿½Êªï¿½ï¿½AAA",16);
+extern mpu6050 DATA;
 
   UART_SendString((uint8_t *)"Enter\r\n");
-  
 
+    printf("Status : %d",HP_6_OpenRate());
+    uint8_t result = 0;
+    uint8_t old_val = 0;
+    
+    RTC_SetDateTime(&date);
+    RTC_DateTime_t now;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+      delay_ms(1000);
+      RTC_GetDateTime(&now);
+      printf("%d %d %d %d %d %d\r\n",now.Year,now.Month,now.Date,now.Hours,now.Minutes,now.Seconds);
+       // delay_ms(500);
+//      HP_6_GetRateResult(&result);
+//      if(result == 0 && old_val != result)
+//      {
+//          old_val = result;
+//          printf("Rate: %d\r\n",result);
+//      }
+      
+      
+      
+//        if(motion_data.update_flag)
+//        {
+//            motion_data.update_flag = 0;
+//            
+////            printf("Pitch: %03.2f ",motion_data.pitch);
+////            printf("Roll:  %03.2f ",motion_data.roll);
+////            printf("Yaw:   %03.2f\r\n",motion_data.yaw);
+//            
+//            printf("ACCX:%.2f\r\n",(DATA.ACCELX) / 16384.0);
+//            printf("ACCY:%.2f\r\n",(DATA.ACCELY) / 16384.0);
+//            printf("ACCZ:%.2f\r\n",(DATA.ACCELZ) / 16384.0);
+//            printf("GYROX:%.2f\r\n",(DATA.GYROX) / 16.4);
+//            printf("GYROY:%.2f\r\n",(DATA.GYROY) / 16.4);
+//            printf("GYROZ:%.2f\r\n",(DATA.GYROZ) / 16.4);
+//        }
+      
+      
+      
 // Key_Event_t event = Get_Key_Event(); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 
-//    if (event != KEY_EVENT_NONE) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿?
+//    if (event != KEY_EVENT_NONE) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½?
 //    {
 //        switch (event)
 //        {
@@ -155,8 +196,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 12;

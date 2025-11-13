@@ -45,6 +45,7 @@ typedef uint32_t u32;
 #include "tim.h"
 #include "adc.h"
 #include "spi.h"
+#include "rtc.h"
 
 #include "LED.h"
 #include "UART.h"
@@ -55,6 +56,10 @@ typedef uint32_t u32;
 #include "MyI2C.h"
 #include "OLED.h"
 #include "Font.h"    
+#include "menu.h"
+#include "MPU6050.h"
+#include "HP6.h"
+#include "MyRTC.h"
 
 /* USER CODE END Includes */
 

@@ -57,7 +57,7 @@ void MX_TIM9_Init(void)
   }
   /* USER CODE BEGIN TIM9_Init 2 */
   __HAL_TIM_ENABLE_IT(&htim9,TIM_IT_UPDATE);    // ��������ж�
-  HAL_TIM_Base_Start(&htim9);   // ����������
+     // ����������
   /* USER CODE END TIM9_Init 2 */
 
 }
@@ -73,16 +73,12 @@ void MX_TIM11_Init(void)
 
   /* USER CODE END TIM11_Init 1 */
   htim11.Instance = TIM11;
-  htim11.Init.Prescaler = 1000;
+  htim11.Init.Prescaler = 0;
   htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim11.Init.Period = 65535;
   htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_OnePulse_Init(&htim11, TIM_OPMODE_SINGLE) != HAL_OK)
   {
     Error_Handler();
   }

@@ -20,4 +20,8 @@ extern const u8 pic_5[];
 extern const u8 pic_6[];
 extern const uint8_t motion[][512];
 
+extern const u8 sun[];
+extern const unsigned char heart[];
+extern const unsigned char bmp[];
+
 #endif
