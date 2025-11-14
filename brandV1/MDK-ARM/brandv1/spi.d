@@ -32,6 +32,8 @@ brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h
+brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 brandv1\spi.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
@@ -45,6 +47,7 @@ brandv1\spi.o: ../Core/Inc/usart.h
 brandv1\spi.o: ../Core/Inc/tim.h
 brandv1\spi.o: ../Core/Inc/adc.h
 brandv1\spi.o: ../Core/Inc/spi.h
+brandv1\spi.o: ../Core/Inc/rtc.h
 brandv1\spi.o: ../Hardware/LED.h
 brandv1\spi.o: ../Hardware/UART.h
 brandv1\spi.o: ../Hardware/Motor.h
@@ -54,3 +57,7 @@ brandv1\spi.o: ../Hardware/SHT20.h
 brandv1\spi.o: ../System/MyI2C.h
 brandv1\spi.o: ../Hardware/OLED.h
 brandv1\spi.o: ../Hardware/Font.h
+brandv1\spi.o: ../Hardware/menu.h
+brandv1\spi.o: ../Hardware/MPU6050.h
+brandv1\spi.o: ../Hardware/HP6.h
+brandv1\spi.o: ../Hardware/MyRTC.h

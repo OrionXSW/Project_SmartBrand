@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "rtc.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -92,19 +93,24 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_TIM9_Init();
-  MX_TIM11_Init();
   MX_ADC1_Init();
   MX_SPI1_Init();
+  MX_TIM11_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   SHT20_Init();
   OLED_Init();
+  MPU6050_Init();
+//  MPU6050_DMPInit();
+  HP6_Init();
 
-//  OLED_ShowChar(0,0,'A',24);
-//  OLED_ShowString(3,0,"��ʪ��AAA",16);
+  HAL_TIM_Base_Start(&htim9);     // update interrupt
 
 
-  UART_SendString((uint8_t *)"Enter\r\n");
-  
+
+    UART_SendString((uint8_t *)"Enter\r\n");
+
+    RTC_SetDateTime(&date);     // 设置默认时间
 
   /* USER CODE END 2 */
 
@@ -112,25 +118,35 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+ 
+    data_control.keyval = Get_Key_Event();     // 轮询
 
-// Key_Event_t event = Get_Key_Event(); // ��ȡ�����¼�
 
-//    if (event != KEY_EVENT_NONE) // ��������¼�����?
-//    {
-//        switch (event)
+    switch(data_control.page_mode)
+    {
+        case MAIN_PAGE:     main_page();        break;
+        case CLOCK_PAGE:    clock_page();       break;
+        case CLOCK_SET_PAGE:Clock_Set_pate();   break;
+        case TEMP_PAGE:     Sensor_page();      break;
+        case MOTION_PAGE:   motion_page();      break;
+        case HR_PAGE:       HeartRate_page();   break;
+        case BP_PAGE:       BP_page();          break;
+            
+    }
+//        switch (data_control.keyval)
 //        {
-//            case KEY_EVENT_UP_PRESS:    printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_DOWN_PRESS:  printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_LEFT_PRESS:  printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_RIGHT_PRESS: printf("ҡ��: ��\r\n"); break;
+//            case KEY_EVENT_UP_PRESS:    printf("上\r\n"); break;
+//            case KEY_EVENT_DOWN_PRESS:  printf("下\r\n"); break;
+//            case KEY_EVENT_LEFT_PRESS:  printf("左\r\n"); break;
+//            case KEY_EVENT_RIGHT_PRESS: printf("右\r\n"); break;
 //            
-//            case KEY_EVENT_CENTER_CLICK:    printf("OK��: ����\r\n"); break;
-//            case KEY_EVENT_CENTER_DOUBLE:   printf("OK��: ˫��\r\n"); break;
-//            case KEY_EVENT_CENTER_LONG:     printf("OK��: ����\r\n"); break;
+//            case KEY_EVENT_CENTER_CLICK:    printf("单击\r\n"); break;
+//            case KEY_EVENT_CENTER_DOUBLE:   printf("双击\r\n"); break;
+//            case KEY_EVENT_CENTER_LONG:     printf("长按\r\n"); break;
 //            
 //            default: break;
 //        }
-//    }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -155,8 +171,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 12;

@@ -250,17 +250,23 @@ void USART1_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-float wendu,shidu;
-uint32_t task_code[5] = {0};
+
+mpu6050 DATA;
+mpu6050_motion_t motion_data;
+uint32_t task_code[6] = {0};
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if(htim->Instance == TIM9)
     {
         __HAL_TIM_CLEAR_FLAG(&htim9,TIM_FLAG_UPDATE);
         
+        task_code[0]++;
         task_code[1]++;
         task_code[2]++;
         task_code[3]++;
+        task_code[4]++;
+        task_code[5]++;
+        
         
         if(task_code[1] >= 10)  // 每10ms扫描一次按键
         {
@@ -268,9 +274,28 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             
             Key_Scan();     // 五向按键轮询:
         }
-        if(task_code[2] >= 2000)  
+        if(task_code[2] >= 1000)  
         {
             task_code[2] = 0;
+            
+//            motion_data.update_flag = 1;
+            
+//            MPU6050_ReadDMP(&motion_data.pitch,&motion_data.roll,&motion_data.yaw);
+
+            
+//            MPU6050_GetData(&DATA);
+
+
+
+            
+//            printf("ACCX:%.2f\r\n",(DATA.ACCELX) / 32768.0f * 16);
+//            printf("ACCY:%.2f\r\n",(DATA.ACCELY) / 32768.0f * 16);
+//            printf("ACCZ:%.2f\r\n",(DATA.ACCELZ) / 32768.0f * 16);
+//            printf("GYROX:%.2f\r\n",(DATA.GYROX) / 32768.0f * 16);
+//            printf("GYROY:%.2f\r\n",(DATA.GYROY) / 32768.0f * 16);
+//            printf("GYROZ:%.2f\r\n",(DATA.GYROZ) / 32768.0f * 16);
+//            printf("\n");            
+            
             
 //            SHT20_Read_Humidity(&shidu);
 //            SHT20_Read_Temperature(&wendu);
@@ -284,15 +309,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         {
             task_code[3] = 0;
             
-            static uint8_t turn = 0;
-            OLED_ShowImage(0,0,64,64,motion[turn]);
-            turn++;
-            
-            if(turn >= 6)
+            if(motion_flag == 1)
             {
-                turn = 0;
+                static uint8_t turn = 0;
+                OLED_ShowImage(0,0,64,64,motion[turn]);
+                turn++;
+                
+                if(turn >= 6)
+                {
+                    turn = 0;
+                }
             }
-            
+
         }
         
             
