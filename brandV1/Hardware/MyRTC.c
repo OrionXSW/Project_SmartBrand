@@ -53,7 +53,7 @@ void RTC_GetDateTime(RTC_DateTime_t* dt)
     HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 
     // 将从HAL库读取的数据填充到我们自定义的结构体中
-    dt->Year = sDate.Year + 2000;
+    dt->Year = sDate.Year;
     dt->Month = sDate.Month;
     dt->Date = sDate.Date;
     dt->WeekDay = sDate.WeekDay;

@@ -105,68 +105,28 @@ int main(void)
   HP6_Init();
 
   HAL_TIM_Base_Start(&htim9);     // update interrupt
-//  OLED_ShowChar(0,0,'A',24);
-//  OLED_ShowString(3,0,"��ʪ��AAA",16);
-extern mpu6050 DATA;
 
-  UART_SendString((uint8_t *)"Enter\r\n");
 
-    HP_6_OpenRate();
-    uint8_t result = 0;
-    uint8_t old_val = 0;
-    
-    RTC_SetDateTime(&date);
-    RTC_DateTime_t now;
+
+    UART_SendString((uint8_t *)"Enter\r\n");
+
+    RTC_SetDateTime(&date);     // 设置默认时间
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//      delay_ms(1000);
-//      RTC_GetDateTime(&now);
-//      printf("%d %d %d %d %d %d\r\n",now.Year,now.Month,now.Date,now.Hours,now.Minutes,now.Seconds);
-       // delay_ms(500);
-//      HP_6_GetRateResult(&result);
-//      if(result == 0 && old_val != result)
-//      {
-//          old_val = result;
-//          printf("Rate: %d\r\n",result);
-//      }
-      
-      
-      
-//        if(motion_data.update_flag)
-//        {
-//            motion_data.update_flag = 0;
-//            
-////            printf("Pitch: %03.2f ",motion_data.pitch);
-////            printf("Roll:  %03.2f ",motion_data.roll);
-////            printf("Yaw:   %03.2f\r\n",motion_data.yaw);
-//            
-//            printf("ACCX:%.2f\r\n",(DATA.ACCELX) / 16384.0);
-//            printf("ACCY:%.2f\r\n",(DATA.ACCELY) / 16384.0);
-//            printf("ACCZ:%.2f\r\n",(DATA.ACCELZ) / 16384.0);
-//            printf("GYROX:%.2f\r\n",(DATA.GYROX) / 16.4);
-//            printf("GYROY:%.2f\r\n",(DATA.GYROY) / 16.4);
-//            printf("GYROZ:%.2f\r\n",(DATA.GYROZ) / 16.4);
-//        }
-      
-      
-      
+ 
     data_control.keyval = Get_Key_Event();     // 轮询
 
-void main_page(void);
-void clock_page(void);
-void Sensor_page(void);
-void motion_page(void);
-void HeartRate_page(void);
-void BP_page(void);
 
     switch(data_control.page_mode)
     {
         case MAIN_PAGE:     main_page();        break;
         case CLOCK_PAGE:    clock_page();       break;
+        case CLOCK_SET_PAGE:Clock_Set_pate();   break;
         case TEMP_PAGE:     Sensor_page();      break;
         case MOTION_PAGE:   motion_page();      break;
         case HR_PAGE:       HeartRate_page();   break;

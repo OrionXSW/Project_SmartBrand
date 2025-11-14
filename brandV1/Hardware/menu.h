@@ -32,6 +32,6 @@ void Sensor_page(void);
 void motion_page(void);
 void HeartRate_page(void);
 void BP_page(void);
-
+void Clock_Set_pate(void);
 
 #endif

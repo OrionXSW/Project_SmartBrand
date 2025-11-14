@@ -233,11 +233,11 @@ void OLED_ShowString(uint8_t page,uint8_t col,uint8_t *str,uint8_t size)
             col += size;
         }
         
-        if(col > 131 - size)
-        {
-            page += size / 8;
-            col = 0;
-        }
+//        if(col > 131 - size)
+//        {
+//            page += size / 8;
+//            col = 0;
+//        }
     }
 }
 

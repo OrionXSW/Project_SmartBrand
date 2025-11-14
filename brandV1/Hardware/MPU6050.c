@@ -235,34 +235,42 @@ void MPU6050_DMPInit(void)
 }
 
 
-void MPU6050_GetData(mpu6050* data)
+void MPU6050_GetData_function(mpu6050* data)
 {
-    uint8_t data_h,data_l;  // 接收电平信号
-    // 加速度计
-    data_h = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_ACCEL_XOUT_L);
-    data->ACCELX = ((data_h << 8) | data_l);
-
-    data_h = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_ACCEL_YOUT_L);
-    data->ACCELY = ((data_h << 8) | data_l);
-
-    data_h = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
-    data->ACCELZ = ((data_h << 8) | data_l);    
+    uint8_t buffer[14];
     
-    // 角速度计
-    data_h = MPU6050_ReadReg(MPU6050_GYRO_XOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_GYRO_XOUT_L);
-    data->GYROX = ((data_h << 8) | data_l); 
-    data_h = MPU6050_ReadReg(MPU6050_GYRO_YOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_GYRO_YOUT_L);
-    data->GYROY = ((data_h << 8) | data_l);     
-    data_h = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_H);
-    data_l = MPU6050_ReadReg(MPU6050_GYRO_ZOUT_L);
-    data->GYROZ = ((data_h << 8) | data_l);     
+    // 一次性读取从 0x3B 开始的14个字节（加速度+温度+陀螺仪）
+    // 注意：你的 MPU6050_ADDR 是0xD0(8位地址)，MPU6050_Read_Len需要7位地址(0x68)
+    MPU6050_Read_Len(MPU6050_ADDR >> 1, MPU6050_ACCEL_XOUT_H, 14, buffer);
+
+    // 将高低字节合并成16位有符号数
+    data->ACCELX = (int16_t)((buffer[0] << 8) | buffer[1]);
+    data->ACCELY = (int16_t)((buffer[2] << 8) | buffer[3]);
+    data->ACCELZ = (int16_t)((buffer[4] << 8) | buffer[5]);
+    // buffer[6]和[7]是温度，这里跳过
+    data->GYROX  = (int16_t)((buffer[8] << 8) | buffer[9]);
+    data->GYROY  = (int16_t)((buffer[10] << 8) | buffer[11]);
+    data->GYROZ  = (int16_t)((buffer[12] << 8) | buffer[13]);     
     
 }
+
+// 输出处理后的数据
+void MPU6050_GetData(mpu6050* data)
+{
+    MPU6050_GetData_function(data);     // 获取初始值
+    
+    // 处理数据
+    data->accel_x = (float)data->ACCELX / ACCEL_SENSITIVITY;
+    data->accel_y = (float)data->ACCELY / ACCEL_SENSITIVITY;
+    data->accel_z = (float)data->ACCELZ / ACCEL_SENSITIVITY;
+    
+    data->gyro_x = (float)data->GYROX / GYRO_SENSITIVITY;
+    data->gyro_y = (float)data->GYROY / GYRO_SENSITIVITY;
+    data->gyro_z = (float)data->GYROZ / GYRO_SENSITIVITY;    
+    
+    
+}
+
 
 
 

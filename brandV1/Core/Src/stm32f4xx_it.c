@@ -253,7 +253,7 @@ void USART1_IRQHandler(void)
 
 mpu6050 DATA;
 mpu6050_motion_t motion_data;
-uint32_t task_code[5] = {0};
+uint32_t task_code[6] = {0};
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if(htim->Instance == TIM9)
@@ -265,6 +265,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         task_code[2]++;
         task_code[3]++;
         task_code[4]++;
+        task_code[5]++;
+        
         
         if(task_code[1] >= 10)  // 每10ms扫描一次按键
         {

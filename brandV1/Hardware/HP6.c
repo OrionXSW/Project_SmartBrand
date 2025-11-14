@@ -584,7 +584,6 @@ u8 HP_6_Closebp(void)
 		}
 		//发送心率测量命令
 		sta = HP_6_SendCmd_CRC(cmd_bp_close,rx_buff);
-		printf("result:0x%x\r\n",rx_buff[6]);
 		
 	}while(!sta || !rx_buff[6]);
 	

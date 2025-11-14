@@ -3,6 +3,9 @@
 
 #include "main.h"
 
+#define ACCEL_SENSITIVITY 2048.0f  // ±2g时的灵敏度
+#define GYRO_SENSITIVITY  16.4f    // ±250°/s时的灵敏度
+
 typedef struct{
 
     int16_t GYROX;
@@ -12,7 +15,19 @@ typedef struct{
     int16_t ACCELY;
     int16_t ACCELZ;
 
+    // 处理后的数据（直接使用这些值）
+    float accel_x;  // 加速度X轴 (g)
+    float accel_y;  // 加速度Y轴 (g)
+    float accel_z;  // 加速度Z轴 (g)
+    float gyro_x;   // 角速度X轴 (°/s)
+    float gyro_y;   // 角速度Y轴 (°/s)
+    float gyro_z;   // 角速度Z轴 (°/s)    
+ 
 } mpu6050;
+
+
+
+
 
 typedef struct{
 
