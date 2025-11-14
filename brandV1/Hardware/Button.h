@@ -16,14 +16,14 @@ typedef enum {
 
 // 按键事件
 typedef enum {
-    KEY_EVENT_NONE = 0,         // 无事件
-    KEY_EVENT_UP_PRESS,         // 上
-    KEY_EVENT_DOWN_PRESS,       // 下
-    KEY_EVENT_LEFT_PRESS,       // 左
-    KEY_EVENT_RIGHT_PRESS,      // 右
-    KEY_EVENT_CENTER_CLICK,     // OK键 单击
-    KEY_EVENT_CENTER_DOUBLE,    // OK键 双击
-    KEY_EVENT_CENTER_LONG       // OK键 长按    
+    KEY_EVENT_NONE = 0,         // 无事件            0
+    KEY_EVENT_UP_PRESS,         // 上                1
+    KEY_EVENT_DOWN_PRESS,       // 下                2
+    KEY_EVENT_LEFT_PRESS,       // 左                3
+    KEY_EVENT_RIGHT_PRESS,      // 右                4
+    KEY_EVENT_CENTER_CLICK,     // OK键 单击         5
+    KEY_EVENT_CENTER_DOUBLE,    // OK键 双击         6
+    KEY_EVENT_CENTER_LONG       // OK键 长按         7
 } Key_Event_t;
 
 // OK键的GPIO端口和引脚 (按下为高电平)

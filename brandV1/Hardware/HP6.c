@@ -460,8 +460,6 @@ u8 HP_6_OpenRate(void)
 			return 0;
 		}
 		sta = HP_6_SendCmd_CRC(cmd_rate_open,rx_buff);
-		printf("sta = %d\r\n",sta);
-        printf("result:0x%x\r\n",rx_buff[6]);
 	}while(!sta || !rx_buff[6]);
 	
 	return 1;

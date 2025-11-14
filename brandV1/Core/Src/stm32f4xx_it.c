@@ -250,7 +250,7 @@ void USART1_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-float wendu,shidu;
+
 mpu6050 DATA;
 mpu6050_motion_t motion_data;
 uint32_t task_code[5] = {0};
@@ -276,12 +276,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         {
             task_code[2] = 0;
             
-            motion_data.update_flag = 1;
+//            motion_data.update_flag = 1;
             
 //            MPU6050_ReadDMP(&motion_data.pitch,&motion_data.roll,&motion_data.yaw);
 
             
-            MPU6050_GetData(&DATA);
+//            MPU6050_GetData(&DATA);
 
 
 
@@ -307,15 +307,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         {
             task_code[3] = 0;
             
-            static uint8_t turn = 0;
-            OLED_ShowImage(0,0,64,64,motion[turn]);
-            turn++;
-            
-            if(turn >= 6)
+            if(motion_flag == 1)
             {
-                turn = 0;
+                static uint8_t turn = 0;
+                OLED_ShowImage(0,0,64,64,motion[turn]);
+                turn++;
+                
+                if(turn >= 6)
+                {
+                    turn = 0;
+                }
             }
-            
+
         }
         
             

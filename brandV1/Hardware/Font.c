@@ -1,6 +1,6 @@
 #include "Font.h"
 
-#include "main.h"                  // Device header
+
 
 //汉字字库
 const u8 table[] = "天温度心率血压湿";

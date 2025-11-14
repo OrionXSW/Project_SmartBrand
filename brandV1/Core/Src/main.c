@@ -104,14 +104,14 @@ int main(void)
 //  MPU6050_DMPInit();
   HP6_Init();
 
-  HAL_TIM_Base_Start(&htim9);     // ��ʼ�����ж�
+  HAL_TIM_Base_Start(&htim9);     // update interrupt
 //  OLED_ShowChar(0,0,'A',24);
 //  OLED_ShowString(3,0,"��ʪ��AAA",16);
 extern mpu6050 DATA;
 
   UART_SendString((uint8_t *)"Enter\r\n");
 
-    printf("Status : %d",HP_6_OpenRate());
+    HP_6_OpenRate();
     uint8_t result = 0;
     uint8_t old_val = 0;
     
@@ -123,9 +123,9 @@ extern mpu6050 DATA;
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      delay_ms(1000);
-      RTC_GetDateTime(&now);
-      printf("%d %d %d %d %d %d\r\n",now.Year,now.Month,now.Date,now.Hours,now.Minutes,now.Seconds);
+//      delay_ms(1000);
+//      RTC_GetDateTime(&now);
+//      printf("%d %d %d %d %d %d\r\n",now.Year,now.Month,now.Date,now.Hours,now.Minutes,now.Seconds);
        // delay_ms(500);
 //      HP_6_GetRateResult(&result);
 //      if(result == 0 && old_val != result)
@@ -154,24 +154,39 @@ extern mpu6050 DATA;
       
       
       
-// Key_Event_t event = Get_Key_Event(); // ��ȡ�����¼�
+    data_control.keyval = Get_Key_Event();     // 轮询
 
-//    if (event != KEY_EVENT_NONE) // ��������¼�����?
-//    {
-//        switch (event)
+void main_page(void);
+void clock_page(void);
+void Sensor_page(void);
+void motion_page(void);
+void HeartRate_page(void);
+void BP_page(void);
+
+    switch(data_control.page_mode)
+    {
+        case MAIN_PAGE:     main_page();        break;
+        case CLOCK_PAGE:    clock_page();       break;
+        case TEMP_PAGE:     Sensor_page();      break;
+        case MOTION_PAGE:   motion_page();      break;
+        case HR_PAGE:       HeartRate_page();   break;
+        case BP_PAGE:       BP_page();          break;
+            
+    }
+//        switch (data_control.keyval)
 //        {
-//            case KEY_EVENT_UP_PRESS:    printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_DOWN_PRESS:  printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_LEFT_PRESS:  printf("ҡ��: ��\r\n"); break;
-//            case KEY_EVENT_RIGHT_PRESS: printf("ҡ��: ��\r\n"); break;
+//            case KEY_EVENT_UP_PRESS:    printf("上\r\n"); break;
+//            case KEY_EVENT_DOWN_PRESS:  printf("下\r\n"); break;
+//            case KEY_EVENT_LEFT_PRESS:  printf("左\r\n"); break;
+//            case KEY_EVENT_RIGHT_PRESS: printf("右\r\n"); break;
 //            
-//            case KEY_EVENT_CENTER_CLICK:    printf("OK��: ����\r\n"); break;
-//            case KEY_EVENT_CENTER_DOUBLE:   printf("OK��: ˫��\r\n"); break;
-//            case KEY_EVENT_CENTER_LONG:     printf("OK��: ����\r\n"); break;
+//            case KEY_EVENT_CENTER_CLICK:    printf("单击\r\n"); break;
+//            case KEY_EVENT_CENTER_DOUBLE:   printf("双击\r\n"); break;
+//            case KEY_EVENT_CENTER_LONG:     printf("长按\r\n"); break;
 //            
 //            default: break;
 //        }
-//    }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
